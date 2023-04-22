@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import sys
+from math import *
 
 class Coordinates_transformation:
 
@@ -68,7 +69,21 @@ class Coordinates_transformation:
     def bl2xyz2000(self):
         pass
     
-    def bl2xyz1992(self):
+    def blGRS802xy1992(self,b,l):
+        L1 = dms2rad(19, 0 ,0)
+        b2 = (self.a ** 2) * (1 - self.e2)
+        ep2 = (self.a ** 2 - b2) / b2
+        dl = l - L1
+        t = tan(b)
+        n2 = ep2 * (cos(b) ** 2)
+        N = Np(self,b)
+        sig = sigma(self,b)
+        xgk = sig + ((dl ** 2 / 2) * N * np.sin(b) * np.cos(b) * (1 + (((dl ** 2)/12) * (np.cos(b) ** 2) * (5 - t **2 + 9 * n2 + 4 * n2 ** 2)) + (((dl ** 4) / 360) * (np.cos(b) ** 4 ) * (61 - 58 * (t ** 2) + t ** 4 + 270 * n2 - 330 * n2 * (t ** 2)))))
+        ygk = dl * N * np.cos(b) * (1 + (((dl ** 2)/6) * (np.cos(b) ** 2) * (1 - t ** 2 + n2)) + (((dl ** 4 ) / 120) * (np.cos(b) ** 4) * (5 - 18 * t ** 2 + t ** 4 + 14 * n2 - 58 * n2 * t ** 2))) 
+        m = 0.9993 
+        x = xgk * m - 5300000
+        y = ygk * m + 500000
+        return(x,y)
         pass
     
 
