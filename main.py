@@ -31,8 +31,12 @@ class Coordinates_transformation:
         l = np.arctan2(Y,X)
         return (f,l,h)
     
-    def blh2xyz(self):
-        pass
+    def blh2xyz(self,f,l,h):
+            N = self.Np(f)
+            X = (N + h) * np.cos(f) * np.cos(l)
+            Y = (N + h) * np.cos(f) * np.sin(l)
+            Z = (N * (1 - self.e2) + h) * np.sin(f)
+            return(X,Y,Z)
     
     def xyz2neu(self):
         pass
