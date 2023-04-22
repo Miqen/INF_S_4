@@ -83,7 +83,7 @@ if __name__ == "__main__":
     
     print(result)
     #if not Path.is_file("results_10.txt"):
-    with open("results_xd.txt", 'w') as file:
+    with open("results.txt", 'w') as file:
         for point in result:
             for i in point:
                 file.write(str(i)+';')
