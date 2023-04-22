@@ -38,7 +38,31 @@ class Coordinates_transformation:
             Z = (N * (1 - self.e2) + h) * np.sin(f)
             return(X,Y,Z)
     
-    def xyz2neu(self):
+    #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
+    # oraz XYZ - dla anteny
+    def xyz2neu(self,X,Y,Z,X0,Y0,Z0):
+        p = np.sqrt(X**2 + Y**2)
+        #print('p=',p)
+        f = np.arctan(Z /( p * (1 - self.e2)))
+        #dms(f)
+        while True:
+            N = self.Np(f)
+            #print('N = ',N)
+            h = (p / np.cos(f)) - N
+           # print('h = ',h)
+            fp = f
+            f = np.arctan(Z / (p * (1 - self.e2 * (N / (N + h)))))
+            #dms(f)
+            if np.abs(fp - f) <( 0.000001/206265):
+                break
+        l = np.arctan2(Y,X)
+        R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
+                      [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
+                      [np.cos(f), 0, np.sin(f)]])
+        dXYZ = np.array([X0,Y0,Z0])- np.array([X,Y,Z])
+        NEU = R.T @ dXYZ
+        return(NEU)
+        
         pass
     
     def bl2xyz2000(self):
