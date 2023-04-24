@@ -146,7 +146,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Transform coordinates.')
     parser.add_argument(dest='method', metavar='M', nargs=1, type=str,
-                        help="""write name of the method
+                        help="""Napisz nazwę metody:
                                 xyz2blh - Metoda zmiany współrzędnych prostokątnych (zyz) na współrzędne geodezyjne (blh)
                                 blh2xyz - Metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
                                 xyz2neu - Metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
@@ -161,7 +161,7 @@ if __name__ == "__main__":
                                 by input""")   
                                 
     parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
-                        help="""Zapisz współrzędne do zmiany""")
+                        help="""Zapisz współrzędne do zmiany:""")
 
                                     
     args = parser.parse_args()
