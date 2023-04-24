@@ -152,7 +152,7 @@ if __name__ == "__main__":
                                 """)
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
-    parser.add_argument(dest='data loading', metavar='L', nargs=1, type=str
+    parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str
                             help="""choose how would you like to load data:
                                 by .txt file
                                 by input""")   
@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
                                     
     args = parser.parse_args()
-    print(args)
+    print(args) #?
     func = getattr(trans, args.method[0])
     
     # prepearing structure of data based on selected method
