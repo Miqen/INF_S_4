@@ -38,7 +38,7 @@ class Coordinates_transformation:
             Y = (N + h) * np.cos(f) * np.sin(l)
             Z = (N * (1 - self.e2) + h) * np.sin(f)
             return(X,Y,Z)
-    
+    #chyba trzba printować na końcu wyniki funkcji żeby się wywietlały na tablicy użytkownika
     #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
     # oraz XYZ - dla anteny
     def xyz2neu(self,X,Y,Z,X0,Y0,Z0):
@@ -63,11 +63,64 @@ class Coordinates_transformation:
         dXYZ = np.array([X0,Y0,Z0])- np.array([X,Y,Z])
         NEU = R.T @ dXYZ
         return(NEU)
-        
-        pass
     
-    def bl2xyz2000(self):
-        pass
+    def dms2rad(d,m,s):
+        kat_rad = radians(d + m/60 + s/3600)
+        return (kat_rad)
+    
+    def A_0(self):
+        A0 = 1 - (self.e2 / 4) - ((3 * self.e2 ** 2) / 64) - ((5 * self.e2 ** 3) / 256)
+        return(A0)
+
+    def A_2(self):
+        A2 = (3 / 8) * (self.e2 + (self.e2 ** 2) / 4 + (15 * self.e2 ** 3) / 128)
+        return(A2)
+
+    def A_4(self):
+        A4 = (15 / 256) * (self.e2 ** 2 + (3 * self.e2 ** 3) / 4)
+        return(A4)
+
+    def A_6(self):
+        A6 = (35 * self.e2 ** 3) / 3072
+        return(A6)
+    
+    def sigma(self,b):
+        A0 = A_0(self.e2)
+        A2 = A_2(self.e2)
+        A4 = A_4(self.e2)
+        A6 = A_6(self.e2)
+        sig = self.a * ((A0 * b) - (A2 * np.sin(2 * b)) + (A4 * np.sin(4 * b)) - (A6 * np.sin(6 * b)))
+        return(sig)
+    
+    
+    def blhGRS802xyz2(self,b,l):
+        lam0 = 0
+        n = 0
+        if l > dms2rad(13, 30, 0) and l < dms2rad(16, 30, 0):
+            lam0 = lam0 + dms2rad(15, 0, 0)
+            n = n + 5
+        if l > dms2rad(16, 30, 0) and l < dms2rad(19, 30, 0): 
+            lam0 = lam0 + dms2rad(18, 0, 0)
+            n = n + 6
+        if l > dms2rad(19, 30, 0) and l < dms2rad(22, 30, 0): 
+            lam0 = lam0 + dms2rad(21, 0, 0)
+            n = n + 7
+        if l > dms2rad(22, 30, 0) and l < dms2rad(25, 30, 0): 
+            lam0 = lam0 + dms2rad(24, 0, 0)
+            n = n + 8
+        b2 = (self.a ** 2) * (1 - self.e2)
+        ep2 = (self.a ** 2 - b2) / b2
+        dl = l - lam0
+        t = tan(b)
+        n2 = ep2 * (cos(b) ** 2)
+        N = Np(self,b)
+        sig = sigma(self,b)
+        xgk = sig + ((dl ** 2 / 2) * N * np.sin(b) * np.cos(b) * (1 + (((dl ** 2)/12) * (np.cos(b) ** 2) * (5 - t **2 + 9 * n2 + 4 * n2 ** 2)) + (((dl ** 4) / 360) * (np.cos(b) ** 4 ) * (61 - 58 * (t ** 2) + t ** 4 + 270 * n2 - 330 * n2 * (t ** 2)))))
+        ygk = dl * N * np.cos(b) * (1 + (((dl ** 2)/6) * (np.cos(b) ** 2) * (1 - t ** 2 + n2)) + (((dl ** 4 ) / 120) * (np.cos(b) ** 4) * (5 - 18 * t ** 2 + t ** 4 + 14 * n2 - 58 * n2 * t ** 2))) 
+        m = 0.999923
+        x = xgk * m
+        y = ygk * m + n * 1000000 + 500000  
+        return(x,y)                  
     
     def blGRS802xy1992(self,b,l):
         L1 = dms2rad(19, 0 ,0)
@@ -95,8 +148,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Transform coordinates.')
     parser.add_argument(dest='method', metavar='M', nargs=1, type=str,
                         help="""write name of the method
-                                xyz2blh - opis
-                                kolejne i itd""")
+                                xyz2blh - Method of converting rectangular coordinates into geodetic coordinates
+                                blh2xyz - Method of converting geodetic coordinates into rectangular coordinates
+                                """)
                                 
     parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
                         help="""write coordinates coordinates for convertion""")
