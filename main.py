@@ -6,7 +6,7 @@ from math import *
 class Coordinates_transformation:
 
     def __init__(self):
-    
+        
         self.a = 6378137
         self.e2 = 0.00669438002290
     
@@ -175,10 +175,13 @@ if __name__ == "__main__":
         
         data = [(args.data[i], args.data[i+1], args.data[i+2]) for i in range(0, len(args.data), len(args.data)//3)]
         print(data)
-    if args.method[0] in {'xyz2neu'}:
+        
+    elif args.method[0] in {'xyz2neu'}:
         pass
-    if: args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
+    
+    elif: args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
         pass
+    
     else:
         print("""please, pick proper function""")    
     
