@@ -147,8 +147,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Transform coordinates.')
     parser.add_argument(dest='method', metavar='M', nargs=1, type=str,
                         help="""write name of the method
-                                xyz2blh - Method of converting rectangular coordinates into geodetic coordinates
-                                blh2xyz - Method of converting geodetic coordinates into rectangular coordinates
+                                xyz2blh - Metoda zmiany współrzędnych prostokątnych (zyz) na współrzędne geodezyjne (blh)
+                                blh2xyz - Metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
+                                xyz2neu - Metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
+                                blGRS802xyz2000 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 2000
+                                blGRS802xy1992 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 1999
                                 """)
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
