@@ -14,56 +14,6 @@ class Coordinates_transformation:
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
         return(N)
     
-    def xyz2blh(self, X, Y, Z):
-        p = np.sqrt(X**2 + Y**2)
-        #print('p=',p)
-        f = np.arctan(Z /( p * (1 - self.e2)))
-        #dms(f)
-        while True:
-            N = self.Np(f)
-            #print('N = ',N)
-            h = (p / np.cos(f)) - N
-           # print('h = ',h)
-            fp = f
-            f = np.arctan(Z / (p * (1 - self.e2 * (N / (N + h)))))
-            #dms(f)
-            if np.abs(fp - f) <( 0.000001/206265):
-                break
-        l = np.arctan2(Y,X)
-        return (f,l,h)
-    
-    def blh2xyz(self,f,l,h):
-            N = self.Np(f)
-            X = (N + h) * np.cos(f) * np.cos(l)
-            Y = (N + h) * np.cos(f) * np.sin(l)
-            Z = (N * (1 - self.e2) + h) * np.sin(f)
-            return(X,Y,Z)
-    #chyba trzba printować na końcu wyniki funkcji żeby się wywietlały na tablicy użytkownika
-    #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
-    # oraz XYZ - dla anteny
-    def xyz2neu(self,X,Y,Z,X0,Y0,Z0):
-        p = np.sqrt(X**2 + Y**2)
-        #print('p=',p)
-        f = np.arctan(Z /( p * (1 - self.e2)))
-        #dms(f)
-        while True:
-            N = self.Np(f)
-            #print('N = ',N)
-            h = (p / np.cos(f)) - N
-           # print('h = ',h)
-            fp = f
-            f = np.arctan(Z / (p * (1 - self.e2 * (N / (N + h)))))
-            #dms(f)
-            if np.abs(fp - f) <( 0.000001/206265):
-                break
-        l = np.arctan2(Y,X)
-        R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
-                      [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
-                      [np.cos(f), 0, np.sin(f)]])
-        dXYZ = np.array([X0,Y0,Z0])- np.array([X,Y,Z])
-        NEU = R.T @ dXYZ
-        return(NEU)
-    
     def dms2rad(d,m,s):
         kat_rad = radians(d + m/60 + s/3600)
         return (kat_rad)
@@ -92,8 +42,58 @@ class Coordinates_transformation:
         sig = self.a * ((A0 * b) - (A2 * np.sin(2 * b)) + (A4 * np.sin(4 * b)) - (A6 * np.sin(6 * b)))
         return(sig)
     
+    def xyz2blh(self, X, Y, Z):
+        p = np.sqrt(X**2 + Y**2)
+        #print('p=',p)
+        f = np.arctan(Z /( p * (1 - self.e2)))
+        #dms(f)
+        while True:
+            N = self.Np(f)
+            #print('N = ',N)
+            h = (p / np.cos(f)) - N
+           # print('h = ',h)
+            fp = f
+            f = np.arctan(Z / (p * (1 - self.e2 * (N / (N + h)))))
+            #dms(f)
+            if np.abs(fp - f) <( 0.000001/206265):
+                break
+        l = np.arctan2(Y,X)
+        return (f,l,h)
     
-    def blhGRS802xyz2(self,b,l):
+    def blh2xyz(self,f,l,h):
+            N = self.Np(f)
+            X = (N + h) * np.cos(f) * np.cos(l)
+            Y = (N + h) * np.cos(f) * np.sin(l)
+            Z = (N * (1 - self.e2) + h) * np.sin(f)
+        return(X,Y,Z)
+    
+    #chyba trzba printować na końcu wyniki funkcji żeby się wywietlały na tablicy użytkownika
+    #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
+    # oraz XYZ - dla anteny
+    def xyz2neu(self,X,Y,Z,X0,Y0,Z0):
+        p = np.sqrt(X**2 + Y**2)
+        #print('p=',p)
+        f = np.arctan(Z /( p * (1 - self.e2)))
+        #dms(f)
+        while True:
+            N = self.Np(f)
+            #print('N = ',N)
+            h = (p / np.cos(f)) - N
+           # print('h = ',h)
+            fp = f
+            f = np.arctan(Z / (p * (1 - self.e2 * (N / (N + h)))))
+            #dms(f)
+            if np.abs(fp - f) <( 0.000001/206265):
+                break
+        l = np.arctan2(Y,X)
+        R = np.array([[-np.sin(f)*np.cos(l), -np.sin(l), np.cos(f)*np.cos(l)],
+                      [-np.sin(f)*np.sin(l), np.cos(l), np.cos(f)*np.sin(l)],
+                      [np.cos(f), 0, np.sin(f)]])
+        dXYZ = np.array([X0,Y0,Z0])- np.array([X,Y,Z])
+        NEU = R.T @ dXYZ
+        return(NEU)    
+    
+    def blGRS802xyz2000(self,b,l):
         lam0 = 0
         n = 0
         if l > dms2rad(13, 30, 0) and l < dms2rad(16, 30, 0):
@@ -137,7 +137,6 @@ class Coordinates_transformation:
         x = xgk * m - 5300000
         y = ygk * m + 500000
         return(x,y)
-        pass
     
 
 
@@ -152,10 +151,16 @@ if __name__ == "__main__":
                                 blh2xyz - Method of converting geodetic coordinates into rectangular coordinates
                                 """)
                                 
+    # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
+    parser.add_argument(dest='data loading', metavar='L', nargs=1, type=str
+                            help="""choose how would you like to load data:
+                                by .txt file
+                                by input""")   
+                                
     parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
                         help="""write coordinates coordinates for convertion""")
-                                    
 
+                                    
     args = parser.parse_args()
     print(args)
     func = getattr(trans, args.method[0])
@@ -170,8 +175,12 @@ if __name__ == "__main__":
         
         data = [(args.data[i], args.data[i+1], args.data[i+2]) for i in range(0, len(args.data), len(args.data)//3)]
         print(data)
+    if args.method[0] in {'xyz2neu'}:
+        pass
+    if: args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
+        pass
     else:
-        pass # wszykie inne -> ze stopni na metry
+        print("""please, pick proper function""")    
     
     # calculations based on chosen method
     result = []
