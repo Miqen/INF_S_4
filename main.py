@@ -166,7 +166,7 @@ if __name__ == "__main__":
     func = getattr(trans, args.method[0])
     
     # prepearing structure of data based on selected method
-    if args.method[0] in {'xyz2blh', 'xyz2neu'}:
+    if args.method[0] in {'xyz2blh'}:
         
         # checks if the given data is correct based on its length
         if len(args.data) % 3 != 0:
