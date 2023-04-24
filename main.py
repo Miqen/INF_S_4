@@ -65,7 +65,7 @@ class Coordinates_transformation:
             X = (N + h) * np.cos(f) * np.cos(l)
             Y = (N + h) * np.cos(f) * np.sin(l)
             Z = (N * (1 - self.e2) + h) * np.sin(f)
-        return(X,Y,Z)
+            return(X,Y,Z)
     
     #chyba trzba printować na końcu wyniki funkcji żeby się wywietlały na tablicy użytkownika
     #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
@@ -111,8 +111,8 @@ class Coordinates_transformation:
         b2 = (self.a ** 2) * (1 - self.e2)
         ep2 = (self.a ** 2 - b2) / b2
         dl = l - lam0
-        t = tan(b)
-        n2 = ep2 * (cos(b) ** 2)
+        t = np.tan(b)
+        n2 = ep2 * (np.cos(b) ** 2)
         N = Np(self,b)
         sig = sigma(self,b)
         xgk = sig + ((dl ** 2 / 2) * N * np.sin(b) * np.cos(b) * (1 + (((dl ** 2)/12) * (np.cos(b) ** 2) * (5 - t **2 + 9 * n2 + 4 * n2 ** 2)) + (((dl ** 4) / 360) * (np.cos(b) ** 4 ) * (61 - 58 * (t ** 2) + t ** 4 + 270 * n2 - 330 * n2 * (t ** 2)))))
@@ -127,8 +127,8 @@ class Coordinates_transformation:
         b2 = (self.a ** 2) * (1 - self.e2)
         ep2 = (self.a ** 2 - b2) / b2
         dl = l - L1
-        t = tan(b)
-        n2 = ep2 * (cos(b) ** 2)
+        t = np.tan(b)
+        n2 = ep2 * (np.cos(b) ** 2)
         N = Np(self,b)
         sig = sigma(self,b)
         xgk = sig + ((dl ** 2 / 2) * N * np.sin(b) * np.cos(b) * (1 + (((dl ** 2)/12) * (np.cos(b) ** 2) * (5 - t **2 + 9 * n2 + 4 * n2 ** 2)) + (((dl ** 4) / 360) * (np.cos(b) ** 4 ) * (61 - 58 * (t ** 2) + t ** 4 + 270 * n2 - 330 * n2 * (t ** 2)))))
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                                 """)
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
-    parser.add_argument(dest='data loading', metavar='L', nargs=1, type=str
+    parser.add_argument(dest='data loading', metavar='L', nargs=1, type=str,
                             help="""choose how would you like to load data:
                                 by .txt file
                                 by input""")   
@@ -177,7 +177,7 @@ if __name__ == "__main__":
         print(data)
     if args.method[0] in {'xyz2neu'}:
         pass
-    if: args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
+    if args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
         pass
     else:
         print("""please, pick proper function""")    
