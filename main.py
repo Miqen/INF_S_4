@@ -60,9 +60,6 @@ class Coordinates_transformation:
         l = np.arctan2(Y,X)
         return (f,l,h)
     
-<<<<<<< HEAD
-    def blGRS802xy2(self,b,l):
-=======
     def blh2xyz(self,f,l,h):
             N = self.Np(f)
             X = (N + h) * np.cos(f) * np.cos(l)
@@ -97,7 +94,6 @@ class Coordinates_transformation:
         return(NEU)    
     
     def blGRS802xyz2000(self,b,l):
->>>>>>> 93acc72e00018dfc73c7049bb0ba045c0df4dce0
         lam0 = 0
         n = 0
         if l > dms2rad(13, 30, 0) and l < dms2rad(16, 30, 0):
