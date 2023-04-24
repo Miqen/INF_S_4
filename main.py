@@ -156,12 +156,12 @@ if __name__ == "__main__":
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
     parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str,
-                            help="""choose how would you like to load data:
+                            help="""Wybierz metodę wprowadzenia danych:
                                 by .txt file
                                 by input""")   
                                 
     parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
-                        help="""write coordinates coordinates for convertion""")
+                        help="""Zapisz współrzędne do zmiany""")
 
                                     
     args = parser.parse_args()
