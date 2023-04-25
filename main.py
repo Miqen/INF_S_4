@@ -65,7 +65,7 @@ class Coordinates_transformation:
             X = (N + h) * np.cos(f) * np.cos(l)
             Y = (N + h) * np.cos(f) * np.sin(l)
             Z = (N * (1 - self.e2) + h) * np.sin(f)
-        return(X,Y,Z)
+            return(X,Y,Z)
     
     #chyba trzba printować na końcu wyniki funkcji żeby się wywietlały na tablicy użytkownika
     #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
@@ -155,8 +155,8 @@ if __name__ == "__main__":
                                 """)
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
-    parser.add_mold(dest='data_loading', metavar='L', nargs=1, type=str
-                            help="""choose how would you like to load data:
+    parser.add_mold(dest='data_loading', metavar='L', nargs=1, type=str,
+                            help="""choose how would you like to load data: 
                                 by .txt file
                                 by input""")   
                                 
