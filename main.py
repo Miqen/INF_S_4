@@ -155,7 +155,7 @@ if __name__ == "__main__":
                                 """)
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
-    parser.add_mold(dest='data_loading', metavar='L', nargs=1, type=str,
+    parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str,
                             help="""choose how would you like to load data: 
                                 by .txt file
                                 by input""")   
