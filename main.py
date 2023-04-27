@@ -14,6 +14,7 @@ class Coordinates_transformation:
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
         return(N)
     
+    # błąd przy 2 ostatnich funkcjach
     def dms2rad(d,m,s):
         kat_rad = np.radians(d + m/60 + s/3600)
         return (kat_rad)
@@ -184,7 +185,8 @@ if __name__ == "__main__":
         if len(args.data) % 6 != 0:
             print("insufficient number of given positioning data")
             sys.exit()
-            
+        
+        # błąd tu jest
         data = [(args.data[i], args.data[i+1], args.data[i+2], args.data[i+3], args.data[i+4], args.data[i+5]) for i in range(0, len(args.data), len(args.data)//6)]
         print(data)
     
