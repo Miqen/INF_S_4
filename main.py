@@ -15,7 +15,7 @@ class Coordinates_transformation:
         return(N)
     
     def dms2rad(d,m,s):
-        kat_rad = radians(d + m/60 + s/3600)
+        kat_rad = np.radians(d + m/60 + s/3600)
         return (kat_rad)
     
     def A_0(self):
@@ -35,10 +35,10 @@ class Coordinates_transformation:
         return(A6)
     
     def sigma(self,b):
-        A0 = A_0(self.e2)
-        A2 = A_2(self.e2)
-        A4 = A_4(self.e2)
-        A6 = A_6(self.e2)
+        A0 = self.A_0(self.e2)
+        A2 = self.A_2(self.e2)
+        A4 = self.A_4(self.e2)
+        A6 = self.A_6(self.e2)
         sig = self.a * ((A0 * b) - (A2 * np.sin(2 * b)) + (A4 * np.sin(4 * b)) - (A6 * np.sin(6 * b)))
         return(sig)
     
@@ -96,17 +96,17 @@ class Coordinates_transformation:
     def blGRS802xyz2000(self,b,l):
         lam0 = 0
         n = 0
-        if l > dms2rad(13, 30, 0) and l < dms2rad(16, 30, 0):
-            lam0 = lam0 + dms2rad(15, 0, 0)
+        if l > self.dms2rad(13, 30, 0) and l < self.dms2rad(16, 30, 0):
+            lam0 = lam0 + self.dms2rad(15, 0, 0)
             n = n + 5
-        if l > dms2rad(16, 30, 0) and l < dms2rad(19, 30, 0): 
-            lam0 = lam0 + dms2rad(18, 0, 0)
+        if l > self.dms2rad(16, 30, 0) and l < self.dms2rad(19, 30, 0): 
+            lam0 = lam0 + self.dms2rad(18, 0, 0)
             n = n + 6
-        if l > dms2rad(19, 30, 0) and l < dms2rad(22, 30, 0): 
-            lam0 = lam0 + dms2rad(21, 0, 0)
+        if l > self.dms2rad(19, 30, 0) and l < self.dms2rad(22, 30, 0): 
+            lam0 = lam0 + self.dms2rad(21, 0, 0)
             n = n + 7
-        if l > dms2rad(22, 30, 0) and l < dms2rad(25, 30, 0): 
-            lam0 = lam0 + dms2rad(24, 0, 0)
+        if l > self.dms2rad(22, 30, 0) and l < self.dms2rad(25, 30, 0): 
+            lam0 = lam0 + self.dms2rad(24, 0, 0)
             n = n + 8
         b2 = (self.a ** 2) * (1 - self.e2)
         ep2 = (self.a ** 2 - b2) / b2
@@ -123,7 +123,7 @@ class Coordinates_transformation:
         return(x,y)                  
     
     def blGRS802xy1992(self,b,l):
-        L1 = dms2rad(19, 0 ,0)
+        L1 = self.dms2rad(19, 0 ,0)
         b2 = (self.a ** 2) * (1 - self.e2)
         ep2 = (self.a ** 2 - b2) / b2
         dl = l - L1
