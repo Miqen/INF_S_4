@@ -188,7 +188,7 @@ if __name__ == "__main__":
         data = [(args.data[i], args.data[i+1], args.data[i+2], args.data[i+3], args.data[i+4], args.data[i+5]) for i in range(0, len(args.data), len(args.data)//6)]
         print(data)
     
-    elif: args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
+    elif args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
         
         if len(args.data) % 2 != 0:
             print("insufficient number of given positioning data")
