@@ -159,7 +159,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Transform coordinates.')
     parser.add_argument(dest='method', metavar='M', nargs=1, type=str,
                         help="""napisz metodę której chcesz użyć z wymienionych poniżej:
-                                xyz2blh - Metoda zmiany współrzędnych prostokątnych (zyz) na współrzędne geodezyjne (blh)
+                                xyz2blh - Metoda zmiany współrzędnych prostokątnych (xyz) na współrzędne geodezyjne (blh)
                                 blh2xyz - Metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
                                 xyz2neu - Metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
                                 blGRS802xyz2000 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 2000
