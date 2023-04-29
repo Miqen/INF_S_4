@@ -14,6 +14,17 @@ class Coordinates_transformation:
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
         return(N)
     
+    def TXT(self):
+        with open('data.txt', 'r') as plik:
+            content = plik.read()
+            lines = content.split('\n')  # rozdzielenie pliku na linie
+            
+            for line in lines:
+                if line.strip():  # pomijanie pustych linii
+                    data_str = line.split(';')  # rozdzielenie linii na dane za pomocą średnika
+                    data = [float(d) for d in data_str]  # rzutowanie wartości na float
+        return(data)
+    
     # błąd przy 2 ostatnich funkcjach
     def dms2rad(d,m,s):
         kat_rad = np.radians(d + m/60 + s/3600)
