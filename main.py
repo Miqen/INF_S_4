@@ -9,7 +9,8 @@ class Coordinates_transformation:
         
         self.a = 6378137
         self.e2 = 0.00669438002290
-    
+        a84 = 6378137
+        e284 = 0.00669438
     def Np(self, f):
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
         return(N)
