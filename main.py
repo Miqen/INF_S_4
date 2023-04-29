@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Transform coordinates.')
     parser.add_argument(dest='method', metavar='M', nargs=1, type=str,
-                        help="""write name of the method
+                        help="""napisz metodę której chcesz użyć z wymienionych poniżej:
                                 xyz2blh - Metoda zmiany współrzędnych prostokątnych (zyz) na współrzędne geodezyjne (blh)
                                 blh2xyz - Metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
                                 xyz2neu - Metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
@@ -157,12 +157,18 @@ if __name__ == "__main__":
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
     parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str,
-                            help="""choose how would you like to load data: 
-                                by .txt file
-                                by input""")   
+                            help="""wybierz w jaki sposób chcesz wgrać dane: 
+                                plik .txt
+                                klauzulą input""")   
                                 
     parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
-                        help="""write coordinates coordinates for convertion""")
+                        help="""wpisz argumenty do transformacji""")
+    
+    parser.add_argument(dest='elipsoida', metavar='E', type=str, nargs='1',
+                        help="""proszę podać elipsoidę z listy poniżej:
+                            GRS80 - 
+                            WGS84 - 
+                            Krasowski - """)
 
                                     
     args = parser.parse_args()
@@ -174,7 +180,7 @@ if __name__ == "__main__":
         
         # checks if the given data is correct based on its length
         if len(args.data) % 3 != 0:
-            print("insufficient number of given positioning data")
+            print("niewystarczająca liczba argumentów")
             sys.exit()
         
         data = [(args.data[i], args.data[i+1], args.data[i+2]) for i in range(0, len(args.data), len(args.data)//3)]
@@ -183,7 +189,7 @@ if __name__ == "__main__":
     elif args.method[0] in {'xyz2neu'}:
         
         if len(args.data) % 6 != 0:
-            print("insufficient number of given positioning data")
+            print("niewystarczająca liczba argumentów")
             sys.exit()
         
         # błąd tu jest
@@ -193,14 +199,19 @@ if __name__ == "__main__":
     elif args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
         
         if len(args.data) % 2 != 0:
-            print("insufficient number of given positioning data")
+            print("niewystarczająca liczba argumentów")
             sys.exit()
             
         data = [(args.data[i], args.data[i+1]) for i in range(0, len(args.data), len(args.data)//2)]
         print(data)
     
     else:
-        print("""please, pick proper function""")    
+        print("""proszę wybierz odpowiednią funkcję z listy:
+              xyz2blh
+              blh2xyz
+              xyz2neu
+              blGRS802xyz2000
+              blGRS802xyz1992""")    
     
     # calculations based on chosen method
     result = []
