@@ -172,6 +172,7 @@ if __name__ == "__main__":
                                 plik .txt
                                 klauzulą input""")
     
+    # trzeba zrobić funkcję wywołującą poszczególne elipsoidy
     parser.add_argument(dest='elipsoida', metavar='E', type=str, nargs='1',
                         help="""proszę wybrać elipsoidę z listy poniżej:
                             GRS80 - 
