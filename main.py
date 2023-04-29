@@ -170,16 +170,16 @@ if __name__ == "__main__":
     parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str,
                             help="""wybierz w jaki sposób chcesz wgrać dane: 
                                 plik .txt
-                                klauzulą input""")   
-                                
-    parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
-                        help="""wpisz argumenty do transformacji""")
+                                klauzulą input""")
     
     parser.add_argument(dest='elipsoida', metavar='E', type=str, nargs='1',
-                        help="""proszę podać elipsoidę z listy poniżej:
+                        help="""proszę wybrać elipsoidę z listy poniżej:
                             GRS80 - 
                             WGS84 - 
                             Krasowski - """)
+                                
+    parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
+                        help="""wpisz argumenty do transformacji""")
 
                                     
     args = parser.parse_args()
