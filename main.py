@@ -17,12 +17,12 @@ class Coordinates_transformation:
     def TXT(self):
         with open('data.txt', 'r') as plik:
             content = plik.read()
-            lines = content.split('\n')  # rozdzielenie pliku na linie
+            lines = content.split('\n')
             
             for line in lines:
-                if line.strip():  # pomijanie pustych linii
-                    data_str = line.split(';')  # rozdzielenie linii na dane za pomocą średnika
-                    data = [float(d) for d in data_str]  # rzutowanie wartości na float
+                if line.strip():
+                    data_str = line.split(';')
+                    data = [float(d) for d in data_str]
         return(data)
     
     # błąd przy 2 ostatnich funkcjach
@@ -163,7 +163,7 @@ if __name__ == "__main__":
                                 blh2xyz - Metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
                                 xyz2neu - Metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
                                 blGRS802xyz2000 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 2000
-                                blGRS802xy1992 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 1999
+                                blGRS802xy1992 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 1992
                                 """)
                                 
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
