@@ -1,7 +1,7 @@
 # Coordinates transformation
-# Program służy do implementacji współrzędnych wybranych przez użytkownika.
+Program służy do implementacji współrzędnych wybranych przez użytkownika.
 
-# Coordinates transformation posiada możliwość implementacji wybranych współrzędnych za pomocą poniższych metod:
+Coordinates transformation posiada możliwość implementacji wybranych współrzędnych za pomocą poniższych metod:
   # 1 - xyz2blh: metoda zmiany współrzędnych prostokątnych (xyz) na współrzędne geodezyjne (blh)
   # 2 - blh2xyz: metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
   # 3 - xyz2neu: metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
