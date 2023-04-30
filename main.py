@@ -1,16 +1,22 @@
 import argparse
 import numpy as np
 import sys
-# from math import *
 
 class Coordinates_transformation:
 
-    def __init__(self):
-        
-        self.a = 6378137
-        self.e2 = 0.00669438002290
-        self.a84 = 6378137
-        self.e284 = 0.00669438
+    def __init__(self, model):
+
+        if model == 'GRS80':
+            self.a = 6378137
+            self.e2 = 0.00669438002290
+        elif model == 'WGS84':
+            self.a = 6378137
+            self.e2 = 0.00669438
+        elif model == 'Krasowski':
+            self.a = 6378245
+            self.e2 = 0.00669342162297
+        else:
+            pass
 
     def Np(self, f):
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
@@ -25,9 +31,6 @@ class Coordinates_transformation:
                     result.append(float(item))
         return result
 
-
-
-    # błąd przy 2 ostatnich funkcjach
     def dms2rad(self, d, m, s):
         kat_rad = np.radians(d + m/60 + s/3600)
         return kat_rad
@@ -49,10 +52,10 @@ class Coordinates_transformation:
         return(A6)
     
     def sigma(self,b):
-        A0 = self.A_0(self.e2)
-        A2 = self.A_2(self.e2)
-        A4 = self.A_4(self.e2)
-        A6 = self.A_6(self.e2)
+        A0 = self.A_0()
+        A2 = self.A_2()
+        A4 = self.A_4()
+        A6 = self.A_6()
         sig = self.a * ((A0 * b) - (A2 * np.sin(2 * b)) + (A4 * np.sin(4 * b)) - (A6 * np.sin(6 * b)))
         return(sig)
     
@@ -80,10 +83,7 @@ class Coordinates_transformation:
             Y = (N + h) * np.cos(f) * np.sin(l)
             Z = (N * (1 - self.e2) + h) * np.sin(f)
             return(X,Y,Z)
-    
-    #chyba trzba printować na końcu wyniki funkcji żeby się wywietlały na tablicy użytkownika
-    #nie wiem czy dobrze ale użytkownik musi podac XYZ0 - dla satelity
-    # oraz XYZ - dla anteny
+
     def xyz2neu(self,X,Y,Z,X0,Y0,Z0):
         p = np.sqrt(X**2 + Y**2)
         #print('p=',p)
@@ -152,11 +152,7 @@ class Coordinates_transformation:
         y = ygk * m + 500000
         return(x,y)
     
-
-
 if __name__ == "__main__":
-
-    trans = Coordinates_transformation()
 
     parser = argparse.ArgumentParser(description='Transform coordinates.')
     parser.add_argument(dest='method', metavar='M', nargs=1, type=str,
@@ -167,21 +163,6 @@ if __name__ == "__main__":
                                 blGRS802xyz2000 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 2000
                                 blGRS802xy1992 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 1992
                                 """)
-    '''                            
-    # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
-    parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str,
-                            help="""wybierz w jaki sposób chcesz wgrać dane: 
-                                plik .txt
-                                klauzulą input""")
-    '''
-    '''
-    # trzeba zrobić funkcję wywołującą poszczególne elipsoidy
-    parser.add_argument(dest='elipsoida', metavar='E', type=str, nargs='1',
-                        help="""proszę wybrać elipsoidę z listy poniżej:
-                            GRS80 - 
-                            WGS84 - 
-                            Krasowski - """)
-       '''
 
     parser.add_argument('-data', dest='data', metavar='D', type=float, nargs='+',
                         help="""wpisz argumenty do transformacji""")
@@ -190,8 +171,14 @@ if __name__ == "__main__":
                         help="""Wybierz tę opcję jeśli dane pochodzą z pliku tesktowego.
                                 Podaj ścieżkę do pliku z danymi""")
 
+    parser.add_argument('-model', dest='model', type=str, nargs=1, default='GRS80',
+                        help="""Wpisz model: GRS80, WGS84, lub Krakowski""")
+
     args = parser.parse_args()
-    print(args) #?
+
+    trans = Coordinates_transformation(args.model[0])
+
+    print(args)
     func = getattr(trans, args.method[0])
 
     if args.path:
@@ -200,25 +187,21 @@ if __name__ == "__main__":
         data = args.data
     
     # prepearing structure of data based on selected method
-    if args.method[0] in {'xyz2blh'}:
+    if args.method[0] in {'xyz2blh', 'dms2rad'}:
         
         # checks if the given data is correct based on its length
         if len(data) % 3 != 0:
             print("niewystarczająca liczba argumentów")
             sys.exit()
-        
-        data = [(data[i], data[i+1], data[i+2]) for i in range(0, len(data), len(data)//3)]
-        print(data)
+        data = [(data[i], data[i+1], data[i+2]) for i in range(0, len(data) - 1, 3)]
         
     elif args.method[0] in {'xyz2neu'}:
         
         if len(data) % 6 != 0:
             print("niewystarczająca liczba argumentów")
             sys.exit()
-        
-        # błąd tu jest
-        data = [(data[i], data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]) for i in range(0, len(data), len(data)//6)]
-        print(data)
+
+        data = [(data[i], data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]) for i in range(0, len(data) - 1, 6)]
     
     elif args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
         
@@ -226,8 +209,7 @@ if __name__ == "__main__":
             print("niewystarczająca liczba argumentów")
             sys.exit()
             
-        data = [(data[i], data[i+1]) for i in range(0, len(data), len(data)//2)]
-        print(data)
+        data = [(data[i], data[i+1]) for i in range(0, len(data) - 1, 2)]
     
     else:
         print("""proszę wybierz odpowiednią funkcję z listy:
@@ -237,13 +219,10 @@ if __name__ == "__main__":
               blGRS802xyz2000
               blGRS802xyz1992""")    
     
-    # calculations based on chosen method
     result = []
     for point in data:
         result.append(func(*point))
-    
-    print(result)
-    #if not Path.is_file("results_10.txt"):
+
     with open("results.txt", 'w') as file:
         for point in result:
             for i in point:
