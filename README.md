@@ -29,8 +29,8 @@ Coordinates transformation posiada możliwość implementacji wybranych współr
                   3000.0;4000.0;
                   ...            (reszta danych analogicznie)
   ### 4.3.- Dla funkcji xyz2neu użytkownik będzie musiał wpisać 6 wartości w każdej linijce pliku .txt (przyporządkowane konkretnym punktom)
-        PRZYKŁAD: 1000.0;1000.0;1000.0;2000.0;2000.0;2000.0; (wartości 1000.0 oraz 3000.0 odpowiadają kolejno współrzędnym X, Y oraz Z zadanego punktu)
-                  3000.0;3000.0;3000.0;4000.0;4000.0;4000.0; (wartości 2000.0 oraz 4000.0 odpowiadją PASSSSSSSSSSSSSSSSSSSSSSSSSSSS)
+        PRZYKŁAD: 1000.0;1000.0;1000.0;2000.0;2000.0;2000.0; (wartości 1000.0 oraz 3000.0 odpowiadają kolejno współrzędnym X, Y oraz Z satelity)
+                  3000.0;3000.0;3000.0;4000.0;4000.0;4000.0; (wartości 2000.0 oraz 4000.0 odpowiadją współrzędnym X, Y oraz Z anteny)
   ## 5.- Następnie użytkownik musi wybrać dla jakiej elipsoidy będą wykonywane obliczenia, aby wybrać model elipsoidy należy wpisać -model GRS80/WGS84 lub Krasowski
       (przykładowa komenda będzie wyglądać następująco: -model GRS80). Klauzula -help udostępni wiersz pomocy użytkownikowi.
   ## 6.- Po wgraniu wszystkich danych, użytkownik potwierdza przeliczenie współrzędnych wybraną transformacją przyciskiem ENTER. Wyniki transformacji zostaną zapisane w pliku tekstowym o nazwie results.txt na dysku w komputerze w tej samej lokalizacji co program. Posegregowane będą zgodnie z kolejnością i schematami wymienionymi powyżej.
