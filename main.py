@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
 import sys
-from math import *
+# from math import *
 
 class Coordinates_transformation:
 
@@ -9,27 +9,28 @@ class Coordinates_transformation:
         
         self.a = 6378137
         self.e2 = 0.00669438002290
-        a84 = 6378137
-        e284 = 0.00669438
+        self.a84 = 6378137
+        self.e284 = 0.00669438
+
     def Np(self, f):
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
         return(N)
-    
-    def TXT(self):
-        with open('data.txt', 'r') as plik:
-            content = plik.read()
-            lines = content.split('\n')
-            
+
+    def read_from_file(self, file_path):
+        with open(file_path, 'r') as f:
+            lines = [line.rstrip()[:-1].split(';') for line in f]
+            result = []
             for line in lines:
-                if line.strip():
-                    data_str = line.split(';')
-                    data = [float(d) for d in data_str]
-        return(data)
-    
+                for item in line:
+                    result.append(float(item))
+        return result
+
+
+
     # błąd przy 2 ostatnich funkcjach
-    def dms2rad(d,m,s):
+    def dms2rad(self, d, m, s):
         kat_rad = np.radians(d + m/60 + s/3600)
-        return (kat_rad)
+        return kat_rad
     
     def A_0(self):
         A0 = 1 - (self.e2 / 4) - ((3 * self.e2 ** 2) / 64) - ((5 * self.e2 ** 3) / 256)
@@ -166,56 +167,66 @@ if __name__ == "__main__":
                                 blGRS802xyz2000 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 2000
                                 blGRS802xy1992 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 1992
                                 """)
-                                
+    '''                            
     # trzeba stworzyć funkcję wywołującą w jaki sposób użytkownik chce wgrać dane do pliku
     parser.add_argument(dest='data_loading', metavar='L', nargs=1, type=str,
                             help="""wybierz w jaki sposób chcesz wgrać dane: 
                                 plik .txt
                                 klauzulą input""")
-    
+    '''
+    '''
     # trzeba zrobić funkcję wywołującą poszczególne elipsoidy
     parser.add_argument(dest='elipsoida', metavar='E', type=str, nargs='1',
                         help="""proszę wybrać elipsoidę z listy poniżej:
                             GRS80 - 
                             WGS84 - 
                             Krasowski - """)
-                                
-    parser.add_argument(dest='data', metavar='D', type=float, nargs='+',
+       '''
+
+    parser.add_argument('-data', dest='data', metavar='D', type=float, nargs='+',
                         help="""wpisz argumenty do transformacji""")
 
-                                    
+    parser.add_argument('-file_path', dest='path', type=str, nargs=1,
+                        help="""Wybierz tę opcję jeśli dane pochodzą z pliku tesktowego.
+                                Podaj ścieżkę do pliku z danymi""")
+
     args = parser.parse_args()
     print(args) #?
     func = getattr(trans, args.method[0])
+
+    if args.path:
+        data = trans.read_from_file(args.path[0])
+    else:
+        data = args.data
     
     # prepearing structure of data based on selected method
     if args.method[0] in {'xyz2blh'}:
         
         # checks if the given data is correct based on its length
-        if len(args.data) % 3 != 0:
+        if len(data) % 3 != 0:
             print("niewystarczająca liczba argumentów")
             sys.exit()
         
-        data = [(args.data[i], args.data[i+1], args.data[i+2]) for i in range(0, len(args.data), len(args.data)//3)]
+        data = [(data[i], data[i+1], data[i+2]) for i in range(0, len(data), len(data)//3)]
         print(data)
         
     elif args.method[0] in {'xyz2neu'}:
         
-        if len(args.data) % 6 != 0:
+        if len(data) % 6 != 0:
             print("niewystarczająca liczba argumentów")
             sys.exit()
         
         # błąd tu jest
-        data = [(args.data[i], args.data[i+1], args.data[i+2], args.data[i+3], args.data[i+4], args.data[i+5]) for i in range(0, len(args.data), len(args.data)//6)]
+        data = [(data[i], data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]) for i in range(0, len(data), len(data)//6)]
         print(data)
     
     elif args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
         
-        if len(args.data) % 2 != 0:
+        if len(data) % 2 != 0:
             print("niewystarczająca liczba argumentów")
             sys.exit()
             
-        data = [(args.data[i], args.data[i+1]) for i in range(0, len(args.data), len(args.data)//2)]
+        data = [(data[i], data[i+1]) for i in range(0, len(data), len(data)//2)]
         print(data)
     
     else:
@@ -238,7 +249,8 @@ if __name__ == "__main__":
             for i in point:
                 file.write(str(i)+';')
             file.write('\n')
-        
+
+
     
     
     
