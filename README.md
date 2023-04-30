@@ -34,4 +34,5 @@ Coordinates transformation posiada możliwość implementacji wybranych współr
   ## 5.- Następnie użytkownik musi wybrać dla jakiej elipsoidy będą wykonywane obliczenia, aby wybrać model elipsoidy należy wpisać -model GRS80/WGS84 lub Krasowski
       (przykładowa komenda będzie wyglądać następująco: -model GRS80). Klauzula -help udostępni wiersz pomocy użytkownikowi.
   ## 6.- Po wgraniu wszystkich danych, użytkownik potwierdza przeliczenie współrzędnych wybraną transformacją przyciskiem ENTER. Wyniki transformacji zostaną zapisane w pliku tekstowym o nazwie results.txt na dysku w komputerze w tej samej lokalizacji co program. Posegregowane będą zgodnie z kolejnością i schematami wymienionymi powyżej.
+  ## 7.- Przy ponownym uruchomieniu programu należy pamiętać, aby usunąć plik results.txt.
                
