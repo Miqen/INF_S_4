@@ -15,8 +15,8 @@ Coordinates transformation posiada możliwość implementacji wybranych współr
 # Używanie programu
   ## 1.- Program można wywołać za pomocą konsoli cmd w pasku wyszukiwania, obok przycisku windows. 
   ## 2.- Po włączeniu konsoli pojawi się czarne okno, w którym należy wpisać: cd {ścieżka do folderu z projektem} - można ją skopiować z explorera plików 
-  (przykładowa komenda będzie wyglądać następująco: cd C:\Users\INF\Documents\Python_projects\INF_S_4\Coordinates_transformation). 
-  ## 3.- Następnie użtkownik musi wpisać komendy (wybraną przez niego transformację) wymienione powyżej. Aby dowiedzieć się więcej na temat udostępnionych metod, użytkownik może wypisać help. 
+  (przykładowa komenda będzie wyglądać następująco: cd C:\Users\INF\Documents\Python_projects\INF_S_4).  
+  ## 3.- Następnie użtkownik musi wpisać Coordinates_transformation.py po czym wpisujemy komendy (wybraną przez niego transformację) wymienione powyżej. Aby dowiedzieć się więcej na temat udostępnionych metod, użytkownik może wypisać help. 
   ## 4.- Użytkownik będzie miał możliwość wyboru w jaki sposób chce wgrać dane do programu. Wpisując komendę -data użytkownik decyduje się na ręczne wpisanie danych do transformacji (dane będą musiały być ułożone w określonym schemacie, patrz punkt 4.1, 4.2 oraz 4.3). Aby wgrać dane z pliku .txt trzeba znać lokalizację pliku tekstowego, którą należy wpisać do programu poprzedzając ją klauzulą -file_path {lokalizacja pliku z danymi\nazwa pliku z danymi}
   (przykładowa komenda będzie wyglądała następująco: -file_path C:\Users\INF\Documents\ENTRY_DATA.txt).
   ##W pliku tym, dane muszą być posegregowane zgodnie z poniższymi schematami:
@@ -35,4 +35,7 @@ Coordinates transformation posiada możliwość implementacji wybranych współr
       (przykładowa komenda będzie wyglądać następująco: -model GRS80). Klauzula -help udostępni wiersz pomocy użytkownikowi.
   ## 6.- Po wgraniu wszystkich danych, użytkownik potwierdza przeliczenie współrzędnych wybraną transformacją przyciskiem ENTER. Wyniki transformacji zostaną zapisane w pliku tekstowym o nazwie results.txt na dysku w komputerze w tej samej lokalizacji co program. Posegregowane będą zgodnie z kolejnością i schematami wymienionymi powyżej.
   ## 7.- Przy ponownym uruchomieniu programu należy pamiętać, aby usunąć plik results.txt.
+  # PEŁNA KLAUZULA DO WYWOŁANIA PROGRAMU BĘDZIE WYGLĄDAĆ TAK:
+  cd {lokalizacja programu} ENTER
+  Coordinates_transformation.py {nazwa metody} {metoda wprowadzenia danych} np -data {dane} {dane} {...} {dane} -model 'wybrany model elipsoidy' ENTER
                
