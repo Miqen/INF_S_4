@@ -16,7 +16,12 @@ class Coordinates_transformation:
             self.a = 6378245
             self.e2 = 0.00669342162297
         else:
-            pass
+            print("""nie wybrano żadnej elipsoidy, proszę wybrać elipsoidę
+                  GRS80
+                  WGS84
+                  Krasowski""")
+            sys.exit()
+            
 
     def Np(self, f):
         N = self.a / np.sqrt(1- self.e2 * np.sin(f)**2)
@@ -107,7 +112,7 @@ class Coordinates_transformation:
         NEU = R.T @ dXYZ
         return(NEU)    
     
-    def blGRS802xyz2000(self,b,l):
+    def blelip2xyz2000(self,b,l):
         lam0 = 0
         n = 0
         if l > self.dms2rad(13, 30, 0) and l < self.dms2rad(16, 30, 0):
@@ -136,7 +141,7 @@ class Coordinates_transformation:
         y = ygk * m + n * 1000000 + 500000  
         return(x,y)                  
     
-    def blGRS802xy1992(self,b,l):
+    def blelip2xy1992(self,b,l):
         L1 = self.dms2rad(19, 0 ,0)
         b2 = (self.a ** 2) * (1 - self.e2)
         ep2 = (self.a ** 2 - b2) / b2
@@ -160,8 +165,8 @@ if __name__ == "__main__":
                                 xyz2blh - Metoda zmiany współrzędnych prostokątnych (xyz) na współrzędne geodezyjne (blh)
                                 blh2xyz - Metoda zmiany współrzędnych geodezyjnych (blh) na współrzędne prostokątne (xyz)
                                 xyz2neu - Metoda zmiany współrzędnych protokątnych (xyz) na współrzędne topocentryczne (neu)
-                                blGRS802xyz2000 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 2000
-                                blGRS802xy1992 - Metoda zmiany współrzędnych z układy GRS80 na współrzędne w układzie 1992
+                                blelip2xyz2000 - Metoda zmiany współrzędnych z układy o wybranej elipsoidzie na współrzędne w układzie 2000
+                                blelip2xy1992 - Metoda zmiany współrzędnych z układy o wybranej elipsoidzie na współrzędne w układzie 1992
                                 """)
 
     parser.add_argument('-data', dest='data', metavar='D', type=float, nargs='+',
@@ -172,7 +177,10 @@ if __name__ == "__main__":
                                 Podaj ścieżkę do pliku z danymi""")
 
     parser.add_argument('-model', dest='model', type=str, nargs=1, default='GRS80',
-                        help="""Wpisz model: GRS80, WGS84, lub Krakowski""")
+                        help="""Wpisz model: GRS80, WGS84, lub Krakowski
+                        GRS80 - elipsoida 
+                        WGS84 - 
+                        Krasowski - """)
 
     args = parser.parse_args()
 
@@ -187,7 +195,7 @@ if __name__ == "__main__":
         data = args.data
     
     # prepearing structure of data based on selected method
-    if args.method[0] in {'xyz2blh', 'dms2rad'}:
+    if args.method[0] in {'xyz2blh', 'blh2xyz'}:
         
         # checks if the given data is correct based on its length
         if len(data) % 3 != 0:
@@ -203,7 +211,7 @@ if __name__ == "__main__":
 
         data = [(data[i], data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]) for i in range(0, len(data) - 1, 6)]
     
-    elif args.method[0] in {'blGRS802xyz2000', 'blGRS802xy1992'}:
+    elif args.method[0] in {'blelip2xyz2000', 'blelip2xy1992'}:
         
         if len(data) % 2 != 0:
             print("niewystarczająca liczba argumentów")
@@ -216,8 +224,9 @@ if __name__ == "__main__":
               xyz2blh
               blh2xyz
               xyz2neu
-              blGRS802xyz2000
-              blGRS802xyz1992""")    
+              blelip2xyz2000
+              blelip2xyz1992""")
+        sys.exit()
     
     result = []
     for point in data:
@@ -228,9 +237,3 @@ if __name__ == "__main__":
             for i in point:
                 file.write(str(i)+';')
             file.write('\n')
-
-
-    
-    
-    
-
