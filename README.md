@@ -12,6 +12,7 @@ Coordinates transformation posiada możliwość implementacji wybranych współr
   metoda zmiany współrzędnych z układy o wybranej elipsoidzie na współrzędne w układzie 2000
  # blelip2xy1992
   metoda zmiany współrzędnych z układy o wybranej elipsoidzie na współrzędne w układzie 1992
+ # Transformacje wykorzystujące elipsoidę Krasowskiego dają błędne rezultaty i elipsoida ta nie powinna być używana.
 # Używanie programu
   ## 1.- Program można wywołać za pomocą konsoli cmd w pasku wyszukiwania, obok przycisku windows. 
   ## 2.- Po włączeniu konsoli pojawi się czarne okno, w którym należy wpisać: cd {ścieżka do folderu z projektem} - można ją skopiować z explorera plików 
